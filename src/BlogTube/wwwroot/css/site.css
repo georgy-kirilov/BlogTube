@@ -1,71 +1,90 @@
-﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
-
-a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
-}
-
-/* Provide sufficient contrast against white background */
-a {
-  color: #0366d6;
-}
-
-.btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
-}
-
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
-}
-
-/* Sticky footer styles
--------------------------------------------------- */
-html {
-  font-size: 14px;
-}
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.border-top {
-  border-top: 1px solid #e5e5e5;
-}
-.border-bottom {
-  border-bottom: 1px solid #e5e5e5;
-}
-
-.box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
-}
-
-button.accept-policy {
-  font-size: 1rem;
-  line-height: inherit;
-}
-
-/* Sticky footer styles
--------------------------------------------------- */
-html {
-  position: relative;
-  min-height: 100%;
+﻿html {
+    position: relative;
+    min-height: 100%;
+    font-family: 'Trebuchet MS', sans-serif;
 }
 
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    background-color: #EEEEEE;
+    color: #3C403D;
 }
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px; /* Vertically center the text there */
+
+.nav-bar {
+    position: fixed;
+    background-color: #FCF6F6;
+    padding: 1.25rem 0rem 1.25rem 0rem;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+}
+
+.article {
+    margin: auto;
+    width: 65%;
+    padding: 3rem;
+    font-size: 1.01rem;
+    box-shadow: 1px 2px 4px 2px #C1C1C1;
+    background-color: #FCF6F6;
+    border-radius: 5px;
+    margin-top: 5rem;
+}
+
+.article-title {
+    font-size: 1.5rem;
+    padding-bottom: 1.5rem;
+}
+
+.article-content {
+    font-style: italic;
+    line-height: 1.5;
+    padding-bottom: 2rem;
+}
+
+.article-img {
+    width: 80%;
+    padding: 2rem 0rem 1.5rem 0rem;
+}
+
+.article-author,
+.article-date {
+    font-style: italic;
+}
+
+.article-paragraph-heading {
+    font-size: 1.15rem;
+}
+
+.article-stats {
+    padding-bottom: 1.25rem;
+}
+
+.article-stats>span {
+    font-size: 1.15rem;
+    font-style: normal;
+    padding-right: 1.5rem;
+}
+
+.article-stats>span:hover {
+    cursor: pointer;
+    color: #BD0000;
+}
+
+.comment-profile-pic {
+    width: 10%;
+    display: inline;
+    text-align: left;
+    border-radius: 5%;
+}
+
+.comments-show-more-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.article-comment {
+    padding: 1.05rem;
+    margin: 1.15rem 0rem 1.15rem 0rem;
+    border-radius: 1%;
 }
