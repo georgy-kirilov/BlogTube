@@ -52,5 +52,24 @@
 
             return this.View(articles);
         }
+
+        public async Task<IActionResult> Id(string id)
+        {
+            ApplicationUser user = await this.userManager.GetUserAsync(this.User);
+            Article article = this.dbContext.Articles.FirstOrDefault(x => x.Id == id);
+
+            if (article == null)
+            {
+                return this.NotFound();
+            }
+
+            if (article.Author != user)
+            {
+                article.Views++;
+                await this.dbContext.SaveChangesAsync();
+            }
+
+            return this.View(article);
+        }
     }
 }

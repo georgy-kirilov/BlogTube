@@ -1,0 +1,12 @@
+﻿@using BlogTube.Data
+@model Article
+
+@{
+    string viewsText = Model.Views == 1 ? "view" : "views";
+}
+
+<h1 class="h2">@Model.Title</h1>
+<div class="font-italic">Published by @@@Model.Author.UserName on @Model.PublishedOn.ToString("dd/MMMM/yyyy")</div>
+<p class="font-weight-normal">@Model.Body</p>
+
+<div class="alert">@Model.Views @viewsText</div>

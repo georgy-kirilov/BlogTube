@@ -26,6 +26,8 @@
 
         public DateTime PublishedOn { get; set; }
 
+        public int Views { get; set; }
+
         [Required]
         public string AuthorId { get; set; }
 

@@ -1,12 +1,22 @@
 ﻿namespace BlogTube.Controllers
 {
+    using BlogTube.Data;
+    using System.Linq;
     using Microsoft.AspNetCore.Mvc;
+    using System;
 
     public class TrendingController : Controller
     {
+        private readonly ApplicationDbContext dbContext;
+
+        public TrendingController(ApplicationDbContext dbContext)
+        {
+            this.dbContext = dbContext;
+        }
+
         public IActionResult Today()
         {
-            //TODO: Extract the most viewed articles for the last 24 hours
+            //this.dbContext.Articles.Where(x => x.PublishedOn < DateTime.UtcNow).OrderByDescending(x => x);
             return this.View();
         }
 

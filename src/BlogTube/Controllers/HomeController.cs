@@ -27,11 +27,9 @@
 
         public IActionResult Search(SearchArticleInputModel input)
         {
-            var view = new SearchArticleViewModel();
-
             //TODO: Perform search in the database
 
-            return this.View(view);
+            return this.View();
         }
 
         [Authorize]
