@@ -48,7 +48,7 @@
         public async Task<IActionResult> My()
         {
             ApplicationUser user = await this.userManager.GetUserAsync(this.User);
-            var articles = user.Articles.ToList();
+            List<Article> articles = this.dbContext.Articles.Where(x => x.AuthorId == user.Id).ToList();
 
             /*foreach (Article article in user.Articles.ToList())
             {
