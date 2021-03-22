@@ -24,6 +24,10 @@ a {
   border-color: #1861ac;
 }
 
+.navbar-nav > li {
+    padding: 0rem 1.1rem 0rem 1.1rem;
+}
+
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
