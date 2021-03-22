@@ -1,5 +1,8 @@
-﻿@using BlogTube.Data;
-@model IEnumerable<Article>
+﻿@using System.Collections.Generic
+@using BlogTube.Data
+@model List<Article>
+
+<h1>My Articles</h1>
 
 @foreach (Article article in Model)
 {
