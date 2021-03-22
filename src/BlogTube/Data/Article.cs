@@ -11,6 +11,7 @@
             this.Id = Guid.NewGuid().ToString();
             this.Categories = new HashSet<ArticleCategory>();
             this.Comments = new HashSet<Comment>();
+            this.Votes = new HashSet<Vote>();
         }
 
         [Key]
@@ -33,5 +34,7 @@
         public virtual ICollection<ArticleCategory> Categories { get; set; }
 
         public virtual ICollection<Comment> Comments { get; set; }
+
+        public virtual ICollection<Vote> Votes { get; set; }
     }
 }
