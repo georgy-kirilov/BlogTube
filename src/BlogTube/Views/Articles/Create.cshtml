@@ -1,16 +1,14 @@
-﻿<h1>Create new article</h1>
+﻿<h5 class="font-weight-normal">Create new article</h5>
 
-<form method="post" asp-action="Create">
+<form method="post" asp-action="Create" id="create-article-form">
     <div>
         <label for="Title"></label>
-        <input id="Title" name="Title" class="form-control" />
-        @*<span asp-validation-for="Title" class="text-danger"></span>*@
+        <input id="Title" name="Title" class="form-control" placeholder="Enter title"/>
     </div>
     <div>
         <label for="Body"></label>
-        <input id="Body" name="Body" class="form-control" />
-        <!--<span asp-validation-for="Body" class="text-danger"></span>-->
+        <textarea rows="5" cols="30" id="Body" name="Body" form="create-article-form" placeholder="Enter your article body" class="form-control"></textarea>
     </div>
     <hr />
-    <input type="submit" class="btn btn-primary" />
+    <input type="submit" class="btn btn-dark" value="Publish"/>
 </form>

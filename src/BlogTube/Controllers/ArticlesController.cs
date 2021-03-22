@@ -50,18 +50,6 @@
             ApplicationUser user = await this.userManager.GetUserAsync(this.User);
             List<Article> articles = this.dbContext.Articles.Where(x => x.AuthorId == user.Id).ToList();
 
-            /*foreach (Article article in user.Articles.ToList())
-            {
-                articles.Add(new ArticleViewModel
-                {
-                    Title = article.Title,
-                    Body = article.Body,
-                    AuthorName = article.Author.UserName,
-                    PublishedOn = article.PublishedOn,
-                    VotesCount = article.Votes.Count,
-                });
-            }*/
-
             return this.View(articles);
         }
     }

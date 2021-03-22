@@ -2,9 +2,12 @@
 @using BlogTube.Data
 @model List<Article>
 
-<h1>My Articles</h1>
+<h1 class="display-4">My articles</h1>
 
 @foreach (Article article in Model)
 {
-    <h1>@article.Title</h1>
+    <div class="shadow-none">
+        <p class="lead">@article.Title</p>
+        <span class="alert-success">published on @article.PublishedOn</span>
+    </div>
 }
