@@ -10,6 +10,7 @@
         {
             this.Id = Guid.NewGuid().ToString();
             this.Categories = new HashSet<ArticleCategory>();
+            this.Comments = new HashSet<Comment>();
         }
 
         [Key]
@@ -30,5 +31,7 @@
         public ApplicationUser Author { get; set; }
 
         public virtual ICollection<ArticleCategory> Categories { get; set; }
+
+        public virtual ICollection<Comment> Comments { get; set; }
     }
 }

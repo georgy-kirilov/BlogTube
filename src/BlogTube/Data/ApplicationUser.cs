@@ -8,8 +8,11 @@
         public ApplicationUser()
         {
             this.Articles = new HashSet<Article>();
+            this.Comments = new HashSet<Comment>();
         }
 
         public virtual ICollection<Article> Articles { get; set; }
+
+        public virtual ICollection<Comment> Comments { get; set; }
     }
 }
