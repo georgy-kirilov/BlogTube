@@ -1,14 +1,10 @@
-﻿using BlogTube.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace BlogTube.Controllers
+﻿namespace BlogTube.Controllers
 {
+    using BlogTube.Models;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Logging;
+    using System.Diagnostics;
+
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -23,9 +19,20 @@ namespace BlogTube.Controllers
             return View();
         }
 
+        [Route("/Privacy")]
         public IActionResult Privacy()
         {
             return View();
+        }
+
+        [Route("/Search")]
+        public IActionResult Search(SearchArticleInputModel input)
+        {
+            var view = new SearchArticleViewModel();
+
+            //TODO: Perform search in the database
+
+            return this.View(view);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
