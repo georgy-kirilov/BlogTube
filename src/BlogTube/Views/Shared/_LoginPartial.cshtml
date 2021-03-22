@@ -7,12 +7,6 @@
     @if (SignInManager.IsSignedIn(User))
     {
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-controller="Articles" asp-action="Create">
-                <i class="fa fa-pencil"></i>
-                Create article
-            </a>
-        </li>
-        <li class="nav-item">
             <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
                 <i class="fa fa-user-o"></i>
                 Profile

@@ -1,4 +1,8 @@
-﻿@{ 
+﻿@using Microsoft.AspNetCore.Identity
+@using BlogTube.Data;
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{
     this.ViewData["Title"] = "BlogTube";
 }
 
@@ -50,6 +54,15 @@
                                 Trending
                             </a>
                         </li>
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Dashboard">
+                                    <i class="fa fa-pencil"></i>
+                                    Dashboard
+                                </a>
+                            </li>
+                        }
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>

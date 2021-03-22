@@ -36,12 +36,12 @@
         public async Task<IActionResult> My()
         {
             ApplicationUser user = await this.userManager.GetUserAsync(this.User);
-            user.Articles.Add(new Article
-            {
-                Title = "Database features",
-                Body = "Body",
-            });
-            this.dbContext.SaveChanges();
+            //user.Articles.Add(new Article
+            //{
+            //    Title = "Database features",
+            //    Body = "Body",
+            //});
+            //this.dbContext.SaveChanges();
             return this.View(user.Articles);
         }
     }
