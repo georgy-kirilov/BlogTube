@@ -21,5 +21,7 @@
         public int Downvotes { get; set; }
 
         public VoteType UserVoteType { get; set; }
+
+        public string CategoryName { get; set; }
     }
 }

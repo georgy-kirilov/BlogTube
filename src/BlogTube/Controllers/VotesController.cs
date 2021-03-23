@@ -1,14 +1,15 @@
 ﻿namespace BlogTube.Controllers
 {
     using BlogTube.Data;
+    using BlogTube.Services;
     using BlogTube.Models.Input;
     using BlogTube.Models.Response;
-    using Microsoft.AspNetCore.Authorization;
+
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+
     using System.Threading.Tasks;
     using System.Linq;
-    using BlogTube.Services;
 
     [ApiController]
     [Route("api/[controller]")]
@@ -18,7 +19,10 @@
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IArticlesService articlesService;
 
-        public VotesController(ApplicationDbContext dbContext, UserManager<ApplicationUser> userManager, IArticlesService articlesService)
+        public VotesController(
+            ApplicationDbContext dbContext, 
+            UserManager<ApplicationUser> userManager, 
+            IArticlesService articlesService)
         {
             this.dbContext = dbContext;
             this.userManager = userManager;

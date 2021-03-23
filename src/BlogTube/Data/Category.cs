@@ -7,7 +7,8 @@
     {
         public Category()
         {
-            this.Articles = new HashSet<ArticleCategory>();
+            this.Articles = new HashSet<Article>();
+            this.Keywords = new HashSet<Keyword>();
         }
 
         [Key]
@@ -17,6 +18,8 @@
         [MaxLength(50)]
         public string Name { get; set; }
 
-        public virtual ICollection<ArticleCategory> Articles { get; set; }
+        public virtual ICollection<Article> Articles { get; set; }
+
+        public virtual ICollection<Keyword> Keywords { get; set; }
     }
 }

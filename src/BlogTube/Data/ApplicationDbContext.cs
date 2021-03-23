@@ -18,6 +18,8 @@
 
         public DbSet<Vote> Votes { get; set; } 
 
+        public DbSet<Keyword> Keywords { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -26,6 +28,12 @@
                    .HasOne(x => x.Author)
                    .WithMany(x => x.Comments)
                    .HasForeignKey(x => x.AuthorId)
+                   .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Article>()
+                   .HasOne(article => article.Category)
+                   .WithMany(category => category.Articles)
+                   .HasForeignKey(article => article.CategoryId)
                    .OnDelete(DeleteBehavior.Restrict);
         }
     }

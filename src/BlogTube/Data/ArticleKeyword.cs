@@ -2,7 +2,7 @@
 {
     using System.ComponentModel.DataAnnotations;
 
-    public class ArticleCategory
+    public class ArticleKeyword
     {
         [Key]
         public int Id { get; set; }
@@ -11,8 +11,8 @@
 
         public Article Article { get; set; }
 
-        public int CategoryId { get; set; }
+        public int KeywordId { get; set; }
 
-        public Category Category { get; set; }
+        public Keyword Keyword { get; set; }
     }
 }

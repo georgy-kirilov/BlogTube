@@ -1,15 +1,18 @@
 ﻿namespace BlogTube.Controllers
 {
+    using BlogTube.Data;
+    using BlogTube.Models;
+    using BlogTube.Services;
+    using BlogTube.Models.Input;
+    
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
+
     using System;
     using System.Linq;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using BlogTube.Data;
-    using BlogTube.Models;
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Identity;
-    using Microsoft.AspNetCore.Mvc;
-    using BlogTube.Services;
 
     public class ArticlesController : Controller
     {
@@ -17,7 +20,10 @@
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IArticlesService articlesService;
 
-        public ArticlesController(ApplicationDbContext dbContext, UserManager<ApplicationUser> userManager, IArticlesService articlesService)
+        public ArticlesController(
+            ApplicationDbContext dbContext, 
+            UserManager<ApplicationUser> userManager, 
+            IArticlesService articlesService)
         {
             this.dbContext = dbContext;
             this.userManager = userManager;
@@ -28,7 +34,8 @@
         [HttpGet]
         public IActionResult Create()
         {
-            return this.View();
+            List<Category> categories = this.dbContext.Categories.ToList();
+            return this.View(categories);
         }
 
         [Authorize]
@@ -37,6 +44,8 @@
         {
             ApplicationUser author = await this.userManager.GetUserAsync(this.User);
 
+            Category category = this.dbContext.Categories.FirstOrDefault(c => c.Id == input.CategoryId);
+
             var article = new Article
             {
                 Title = input.Title,
@@ -44,6 +53,7 @@
                 PublishedOn = DateTime.UtcNow,
             };
 
+            category.Articles.Add(article);
             author.Articles.Add(article);
             await this.dbContext.SaveChangesAsync();
 
@@ -97,6 +107,7 @@
                 Upvotes = this.articlesService.GetUpvotesCount(article.Id),
                 Downvotes = this.articlesService.GetDownvotesCount(article.Id),
                 UserVoteType = voteType,
+                CategoryName = article.Category.Name,
             };
 
             return this.View(viewModel);

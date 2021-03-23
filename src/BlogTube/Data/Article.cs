@@ -9,7 +9,7 @@
         public Article()
         {
             this.Id = Guid.NewGuid().ToString();
-            this.Categories = new HashSet<ArticleCategory>();
+            this.Keywords = new HashSet<ArticleKeyword>();
             this.Comments = new HashSet<Comment>();
             this.Votes = new HashSet<Vote>();
         }
@@ -18,7 +18,7 @@
         public string Id { get; set; }
 
         [Required]
-        [MaxLength(80)]
+        [MaxLength(100)]
         public string Title { get; set; }
 
         [Required]
@@ -31,9 +31,13 @@
         [Required]
         public string AuthorId { get; set; }
 
-        public virtual ApplicationUser Author { get; set; }
+        public ApplicationUser Author { get; set; }
 
-        public virtual ICollection<ArticleCategory> Categories { get; set; }
+        public int CategoryId { get; set; }
+
+        public Category Category { get; set; }
+
+        public virtual ICollection<ArticleKeyword> Keywords { get; set; } 
 
         public virtual ICollection<Comment> Comments { get; set; }
 

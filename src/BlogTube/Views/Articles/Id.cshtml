@@ -3,18 +3,19 @@
 @{
     string viewsText = Model.Views == 1 ? "view" : "views";
     const string SelectedVoteClassName = "selected-vote";
-    const string UnselectedVoteClassName = "alert alert-secondary";
 }
 
 <div class="alert alert-light">
     <h1 class="h2">@Model.Title</h1>
+    <div class="font-weight-bold text-info p-3">@Model.CategoryName</div>
     <div class="font-italic p-3">Published by @@@Model.AuthorName on @Model.PublishedOn</div>
+
     <p class="font-weight-normal">@Model.Body</p>
 
     <span class="alert alert-secondary">@Model.Views @viewsText</span>
 
     <button id="upvote-button"
-            class="@if (Model.UserVoteType == VoteType.Up)@SelectedVoteClassName @UnselectedVoteClassName ml-2"
+            class="@if (Model.UserVoteType == VoteType.Up)@SelectedVoteClassName alert alert-secondary ml-2"
             onclick="vote('@Model.Id', true)">
 
         <i class="fa fa-thumbs-up">
@@ -23,7 +24,7 @@
     </button>
 
     <button id="downvote-button"
-            class="@if (Model.UserVoteType == VoteType.Down)@SelectedVoteClassName @UnselectedVoteClassName"
+            class="@if (Model.UserVoteType == VoteType.Down)@SelectedVoteClassName alert alert-secondary"
             onclick="vote('@Model.Id', false)">
 
         <i class="fa fa-thumbs-down">
@@ -43,6 +44,7 @@
     function vote(articleId, isUp) {
         let token = $("#votesForm input[name=__RequestVerificationToken]").val();
         let json = { articleId: articleId, isUp: isUp };
+
         $.ajax({
             url: "/api/votes",
             type: "POST",
@@ -57,6 +59,7 @@
 
                 $(`${upvoteButtonId}${subpath}`).text(data.upvotes);
                 $(`${downvoteButtonId}${subpath}`).text(data.downvotes);
+
                 $(upvoteButtonId).removeClass("@SelectedVoteClassName");
                 $(downvoteButtonId).removeClass("@SelectedVoteClassName");
 
