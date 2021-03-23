@@ -7,8 +7,14 @@
 
 <div class="alert alert-light">
     <h1 class="h2">@Model.Title</h1>
-    <div class="font-weight-bold text-info p-3">@Model.CategoryName</div>
-    <div class="font-italic p-3">Published by @@@Model.AuthorName on @Model.PublishedOn</div>
+    <div class="font-weight-bold text-info py-2"></div>
+    <div class="alert alert-info py-3 col-6">
+        Published by 
+            <span class="font-italic font-weight-bold">@@@Model.AuthorName</span>
+        on 
+            <span class="font-italic">@Model.PublishedOn</span>
+            <span class="text-uppercase font-weight-bold">@Model.CategoryName</span>
+    </div>
 
     <p class="font-weight-normal">@Model.Body</p>
 

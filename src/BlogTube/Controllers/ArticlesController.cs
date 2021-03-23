@@ -34,8 +34,12 @@
         [HttpGet]
         public IActionResult Create()
         {
-            List<Category> categories = this.dbContext.Categories.ToList();
-            return this.View(categories);
+            var inputModel = new CreateArticleInputModel
+            {
+                Categories = this.dbContext.Categories.ToList()
+            };
+
+            return this.View(inputModel);
         }
 
         [Authorize]
@@ -107,7 +111,7 @@
                 Upvotes = this.articlesService.GetUpvotesCount(article.Id),
                 Downvotes = this.articlesService.GetDownvotesCount(article.Id),
                 UserVoteType = voteType,
-                CategoryName = article.Category.Name,
+                CategoryName = this.dbContext.Categories.FirstOrDefault(c => c.Id == article.CategoryId).Name,
             };
 
             return this.View(viewModel);

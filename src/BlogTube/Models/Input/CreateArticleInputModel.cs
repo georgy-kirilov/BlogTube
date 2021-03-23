@@ -1,5 +1,7 @@
 ﻿namespace BlogTube.Models.Input
 {
+    using BlogTube.Data;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
     public class CreateArticleInputModel
@@ -14,6 +16,9 @@
         public string Body { get; set; }
 
         [Required]
+        [Display(Name = "Choose a category")]
         public int CategoryId { get; set; }
+
+        public IEnumerable<Category> Categories { get; set; }
     }
 }
