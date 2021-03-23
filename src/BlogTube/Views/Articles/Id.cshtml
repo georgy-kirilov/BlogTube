@@ -1,12 +1,43 @@
 ﻿@using BlogTube.Data
-@model Article
+@model ArticleViewModel
 
 @{
     string viewsText = Model.Views == 1 ? "view" : "views";
 }
 
 <h1 class="h2">@Model.Title</h1>
-<div class="font-italic">Published by @@@Model.Author.UserName on @Model.PublishedOn.ToString("dd/MMMM/yyyy")</div>
+<div class="font-italic">Published by @@@Model.AuthorName on @Model.PublishedOn</div>
 <p class="font-weight-normal">@Model.Body</p>
 
-<div class="alert">@Model.Views @viewsText</div>
+<div class="container-fluid">@Model.Views @viewsText</div>
+
+<button class="btn btn-info" onclick="vote('@Model.Id', true)">
+    <i class="fa fa-thumbs-up">
+        <span id="upvotes-span">@Model.Upvotes</span>
+    </i>
+</button>
+
+<button class="btn btn-info" onclick="vote('@Model.Id', false)">
+    <i class="fa fa-thumbs-down">
+        <span id="downvotes-span">@Model.Downvotes</span>
+    </i>
+</button>
+
+<script>
+    function vote(articleId, isUp) {
+        let token = $("#votesForm input[name=__RequestVerificationToken]").val();
+        let json = { articleId: articleId, isUp: isUp };
+        $.ajax({
+            url: "/api/votes",
+            type: "POST",
+            data: JSON.stringify(json),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            headers: { 'X-CSRF-TOKEN': token },
+            success: function (data) {
+                $("#upvotes-span").text(data.upvotes);
+                $("#downvotes-span").text(data.downvotes);
+            }
+        });
+    }
+</script>
