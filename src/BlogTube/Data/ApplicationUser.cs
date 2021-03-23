@@ -9,6 +9,7 @@
         {
             this.Articles = new HashSet<Article>();
             this.Comments = new HashSet<Comment>();
+            this.Votes = new HashSet<Vote>();
         }
 
         public virtual ICollection<Article> Articles { get; set; }

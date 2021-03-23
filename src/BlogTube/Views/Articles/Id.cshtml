@@ -1,27 +1,43 @@
 ﻿@using BlogTube.Data
 @model ArticleViewModel
-
 @{
     string viewsText = Model.Views == 1 ? "view" : "views";
+    const string SelectedVoteClassName = "selected-vote";
+    const string UnselectedVoteClassName = "alert alert-secondary";
 }
 
-<h1 class="h2">@Model.Title</h1>
-<div class="font-italic">Published by @@@Model.AuthorName on @Model.PublishedOn</div>
-<p class="font-weight-normal">@Model.Body</p>
+<div class="alert alert-light">
+    <h1 class="h2">@Model.Title</h1>
+    <div class="font-italic p-3">Published by @@@Model.AuthorName on @Model.PublishedOn</div>
+    <p class="font-weight-normal">@Model.Body</p>
 
-<div class="container-fluid">@Model.Views @viewsText</div>
+    <span class="alert alert-secondary">@Model.Views @viewsText</span>
 
-<button class="btn btn-info" onclick="vote('@Model.Id', true)">
-    <i class="fa fa-thumbs-up">
-        <span id="upvotes-span">@Model.Upvotes</span>
-    </i>
-</button>
+    <button id="upvote-button"
+            class="@if (Model.UserVoteType == VoteType.Up)@SelectedVoteClassName @UnselectedVoteClassName ml-2"
+            onclick="vote('@Model.Id', true)">
 
-<button class="btn btn-info" onclick="vote('@Model.Id', false)">
-    <i class="fa fa-thumbs-down">
-        <span id="downvotes-span">@Model.Downvotes</span>
-    </i>
-</button>
+        <i class="fa fa-thumbs-up">
+            <span>@Model.Upvotes</span>
+        </i>
+    </button>
+
+    <button id="downvote-button"
+            class="@if (Model.UserVoteType == VoteType.Down)@SelectedVoteClassName @UnselectedVoteClassName"
+            onclick="vote('@Model.Id', false)">
+
+        <i class="fa fa-thumbs-down">
+            <span>@Model.Downvotes</span>
+        </i>
+    </button>
+</div>
+
+<style>
+    .@SelectedVoteClassName {
+        background-color: gray;
+        color: floralwhite;
+    }
+</style>
 
 <script>
     function vote(articleId, isUp) {
@@ -33,10 +49,23 @@
             data: JSON.stringify(json),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            headers: { 'X-CSRF-TOKEN': token },
+            headers: { "X-CSRF-TOKEN": token },
             success: function (data) {
-                $("#upvotes-span").text(data.upvotes);
-                $("#downvotes-span").text(data.downvotes);
+                let subpath = ">i>span";
+                let upvoteButtonId = "#upvote-button";
+                let downvoteButtonId = "#downvote-button";
+
+                $(`${upvoteButtonId}${subpath}`).text(data.upvotes);
+                $(`${downvoteButtonId}${subpath}`).text(data.downvotes);
+                $(upvoteButtonId).removeClass("@SelectedVoteClassName");
+                $(downvoteButtonId).removeClass("@SelectedVoteClassName");
+
+                if (data.isUpvoted) {
+                    $(upvoteButtonId).addClass("@SelectedVoteClassName");
+                }
+                if (data.isDownvoted) {
+                    $(downvoteButtonId).addClass("@SelectedVoteClassName");
+                }
             }
         });
     }

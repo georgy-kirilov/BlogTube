@@ -1,6 +1,7 @@
 namespace BlogTube
 {
     using BlogTube.Data;
+    using BlogTube.Services;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Identity;
@@ -26,7 +27,12 @@ namespace BlogTube
 
             services.AddDatabaseDeveloperPageExceptionFilter();
             services.AddScoped<UserManager<ApplicationUser>>();
-            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
+            services.AddScoped<IArticlesService, ArticlesService>();
+
+            services.AddDefaultIdentity<ApplicationUser>(options =>
+                    {
+                        options.SignIn.RequireConfirmedAccount = false;
+                    })
                     .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddControllersWithViews();

@@ -9,18 +9,19 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
+    using BlogTube.Services;
 
     public class ArticlesController : Controller
     {
         private readonly ApplicationDbContext dbContext;
         private readonly UserManager<ApplicationUser> userManager;
-        private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly IArticlesService articlesService;
 
-        public ArticlesController(ApplicationDbContext dbContext, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        public ArticlesController(ApplicationDbContext dbContext, UserManager<ApplicationUser> userManager, IArticlesService articlesService)
         {
             this.dbContext = dbContext;
             this.userManager = userManager;
-            this.signInManager = signInManager;
+            this.articlesService = articlesService;
         }
 
         [Authorize]
@@ -45,6 +46,7 @@
 
             author.Articles.Add(article);
             await this.dbContext.SaveChangesAsync();
+
             return this.Redirect("/");
         }
 
@@ -66,10 +68,22 @@
                 return this.NotFound();
             }
 
-            if (article.AuthorId != user.Id)
+            VoteType voteType = VoteType.None;
+
+            if (user == null || article.AuthorId != user.Id)
             {
                 article.Views++;
                 await this.dbContext.SaveChangesAsync();
+            }
+
+            if (user != null)
+            {
+                Vote vote = this.dbContext.Votes.FirstOrDefault(v => v.ArticleId == id && v.AuthorId == user.Id);
+
+                if (vote != null)
+                {
+                    voteType = vote.Type;
+                }
             }
 
             var viewModel = new ArticleViewModel
@@ -80,8 +94,9 @@
                 AuthorName = this.dbContext.Users.FirstOrDefault(u => u.Id == article.AuthorId).UserName,
                 PublishedOn = article.PublishedOn.ToString("dd/MMMM/yyyy"),
                 Views = article.Views,
-                Upvotes = this.dbContext.Votes.Where(v => v.ArticleId == article.Id && v.Type == VoteType.Up).ToList().Count,
-                Downvotes = this.dbContext.Votes.Where(v => v.ArticleId == article.Id && v.Type == VoteType.Down).ToList().Count,
+                Upvotes = this.articlesService.GetUpvotesCount(article.Id),
+                Downvotes = this.articlesService.GetDownvotesCount(article.Id),
+                UserVoteType = voteType,
             };
 
             return this.View(viewModel);

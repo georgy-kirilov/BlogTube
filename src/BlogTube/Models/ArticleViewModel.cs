@@ -1,6 +1,6 @@
 ﻿namespace BlogTube.Models
 {
-    using System;
+    using BlogTube.Data;
 
     public class ArticleViewModel
     {
@@ -19,5 +19,7 @@
         public int Upvotes { get; set; }
 
         public int Downvotes { get; set; }
+
+        public VoteType UserVoteType { get; set; }
     }
 }
