@@ -62,7 +62,7 @@
             author.Articles.Add(article);
             await this.dbContext.SaveChangesAsync();
 
-            return this.Redirect("/");
+            return this.RedirectToAction("Id", new { id = article.Id });
         }
 
         [Authorize]
