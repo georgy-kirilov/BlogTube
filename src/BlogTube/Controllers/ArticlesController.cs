@@ -47,7 +47,6 @@
         public async Task<IActionResult> Create(CreateArticleInputModel input)
         {
             ApplicationUser author = await this.userManager.GetUserAsync(this.User);
-
             Category category = this.dbContext.Categories.FirstOrDefault(c => c.Id == input.CategoryId);
 
             var article = new Article

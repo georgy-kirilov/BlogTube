@@ -1,1 +1,38 @@
-﻿<h1>Trending for the Last Month</h1>
+﻿@using System.Collections.Generic
+@model IEnumerable<ArticleViewModel>
+
+<h1 class="display-4">Trending for the Last Month</h1>
+
+<div class="dropdown show">
+    <a class="btn btn-secondary dropdown-toggle col-3 my-2" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Last month
+    </a>
+
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+        <a class="dropdown-item" asp-action="Today">Today</a>
+        <a class="dropdown-item" asp-action="Week">This week</a>
+        <a class="dropdown-item" asp-action="Month">Last month</a>
+    </div>
+</div>
+
+@foreach (ArticleViewModel article in Model)
+{
+    <div class="alert alert-primary">
+        <a asp-controller="Articles" asp-action="Id" asp-route-id="@article.Id">@article.Title</a>
+        <span>by @@@article.AuthorName on @article.PublishedOn</span>
+        <div>
+            <span>
+                <i class="fa fa-eye"></i>
+                @article.Views
+            </span>
+            <span class="col-4">
+                <i class="fa fa-thumbs-up"></i>
+                @article.Upvotes
+            </span>
+            <span>
+                <i class="fa fa fa-thumbs-down"></i>
+                @article.Downvotes
+            </span>
+        </div>
+    </div>
+}

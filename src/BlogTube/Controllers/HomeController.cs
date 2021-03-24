@@ -25,10 +25,16 @@
             return View();
         }
 
+        [HttpGet]
+        public IActionResult Search()
+        {
+            return this.View();
+        }
+
+        [HttpPost]
         public IActionResult Search(SearchArticleInputModel input)
         {
             //TODO: Perform search in the database
-
             return this.View();
         }
 
