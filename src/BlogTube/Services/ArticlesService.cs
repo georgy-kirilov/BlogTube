@@ -17,6 +17,7 @@
         public async Task<ArticleViewModel> GetArticleAsync(ApplicationUser user, string articleId)
         {
             Article article = this.dbContext.Articles.FirstOrDefault(x => x.Id == articleId);
+            bool canBeDeleted = true;
 
             if (article == null)
             {
@@ -28,6 +29,7 @@
             if (user == null || article.AuthorId != user.Id)
             {
                 article.Views++;
+                canBeDeleted = false;
                 await this.dbContext.SaveChangesAsync();
             }
 
@@ -53,6 +55,7 @@
                 Downvotes = this.GetDownvotesCount(article.Id),
                 UserVoteType = voteType,
                 CategoryName = this.dbContext.Categories.FirstOrDefault(c => c.Id == article.CategoryId).Name,
+                CanBeDeleted = canBeDeleted,
             };
 
             return viewModel;

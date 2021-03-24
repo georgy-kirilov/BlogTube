@@ -1,4 +1,6 @@
 ﻿@using BlogTube.Data
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
 @model ArticleViewModel
 @{
     string viewsText = Model.Views == 1 ? "view" : "views";
@@ -8,11 +10,10 @@
 <div class="alert alert-light col-12">
     <h1 class="h2">@Model.Title</h1>
     <div class="alert alert-info py-2 my-3 col-7">
-        Published by 
-            <span class="font-italic font-weight-bold">@@@Model.AuthorName</span>
-        on 
-            <span class="font-italic">@Model.PublishedOn</span>
-            <span class="text-uppercase font-weight-bold">@Model.CategoryName</span>
+        Published by
+        <span class="font-italic font-weight-bold">@@@Model.AuthorName</span>
+        <span class="font-italic">on @Model.PublishedOn</span>
+        <span class="text-uppercase font-weight-bold">@Model.CategoryName</span>
     </div>
 
     <p class="font-weight-normal">@Model.Body</p>
@@ -36,6 +37,35 @@
             <span>@Model.Downvotes</span>
         </i>
     </button>
+
+    @if (Model.CanBeDeleted)
+    {
+        <button id="delete-button" onclick="showDeleteForm()" class="alert alert-warning">Delete</button>
+
+        <form method="post" asp-action="Delete" asp-route-id="@Model.Id" id="delete-form" class="my-4" >
+
+            <input id="delete-input" 
+                   name="deleteValue" 
+                   class="form-control col-6" 
+                   oninput="validateDeleteInputValue()" 
+                   type="text" 
+                   placeholder="Type in DELETE" 
+                   autocomplete="off" />
+
+            <div class="my-2">
+                <input id="cancel-delete-button" 
+                       value="Cancel" 
+                       class="btn btn-dark" 
+                       onclick="hideDeleteForm()"/>
+
+                <input id="delete-forever-button" 
+                       type="submit" 
+                       value="Delete forever" 
+                       class="btn btn-danger"/>
+            </div>
+        </form>
+    }
+
 </div>
 
 <style>
@@ -43,13 +73,19 @@
         background-color: gray;
         color: floralwhite;
     }
+    #delete-button {
+        color: white;
+        background-color: #d9534f;
+    }
+    #cancel-delete-button:hover {
+        cursor: pointer;
+    }
 </style>
 
 <script>
     function vote(articleId, isUp) {
-        let token = $("#votesForm input[name=__RequestVerificationToken]").val();
+        let token = "sdhsAksWOSlPPsk90SlllaXmNsavxbal";
         let json = { articleId: articleId, isUp: isUp };
-
         $.ajax({
             url: "/api/votes",
             type: "POST",
@@ -64,7 +100,6 @@
 
                 $(`${upvoteButtonId}${subpath}`).text(data.upvotes);
                 $(`${downvoteButtonId}${subpath}`).text(data.downvotes);
-
                 $(upvoteButtonId).removeClass("@SelectedVoteClassName");
                 $(downvoteButtonId).removeClass("@SelectedVoteClassName");
 
@@ -77,4 +112,45 @@
             }
         });
     }
+
+    function validateDeleteInputValue() {
+        let text = document.getElementById("delete-input").value;
+        if (text != "DELETE") {
+            hideDeleteForeverButton();
+        }
+        else {
+            showDeleteForeverButton();
+        }
+    }
+
+    function showCancelDeleteButton() {
+        document.getElementById("cancel-delete-button").style.display = "block";
+    }
+
+    function hideCancelDeleteButton() {
+        document.getElementById("cancel-delete-button").style.display = "none";
+    }
+
+    function showDeleteForeverButton() {
+        document.getElementById("delete-forever-button").style.display = "inline";
+    }
+
+    function hideDeleteForeverButton() {
+        document.getElementById("delete-forever-button").style.display = "none";
+    }
+
+    function hideDeleteForm() {
+        document.getElementById("delete-form").style.display = "none";
+        document.getElementById("delete-button").style.display = "inline";
+    }
+
+    function showDeleteForm() {
+        document.getElementById("delete-form").style.display = "block";
+        document.getElementById("delete-input").value = "";
+        hideDeleteForeverButton();
+        document.getElementById("delete-button").style.display = "none";
+    }
+
+    hideDeleteForm();
+
 </script>

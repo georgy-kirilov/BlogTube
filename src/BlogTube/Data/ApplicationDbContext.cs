@@ -34,7 +34,13 @@
                    .HasOne(article => article.Category)
                    .WithMany(category => category.Articles)
                    .HasForeignKey(article => article.CategoryId)
-                   .OnDelete(DeleteBehavior.Restrict);
+                   .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<Article>()
+                   .HasMany(article => article.Votes)
+                   .WithOne(vote => vote.Article)
+                   .HasForeignKey(vote => vote.ArticleId)
+                   .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

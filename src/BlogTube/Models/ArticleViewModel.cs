@@ -23,5 +23,7 @@
         public VoteType UserVoteType { get; set; }
 
         public string CategoryName { get; set; }
+
+        public bool CanBeDeleted { get; set; }
     }
 }

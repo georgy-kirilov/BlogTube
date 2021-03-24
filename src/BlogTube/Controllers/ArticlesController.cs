@@ -93,5 +93,28 @@
 
             return this.View(viewModel);
         }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> Delete(string id, string deleteValue)
+        {
+            if (deleteValue != "DELETE")
+            {
+                return this.RedirectToAction($"Id", new { id = id });
+            }
+
+            ApplicationUser user = await this.userManager.GetUserAsync(this.User);
+            Article article = this.dbContext.Articles.FirstOrDefault(a => a.Id == id);
+
+            if (user.Id != article.AuthorId)
+            {
+                return this.Unauthorized();
+            }
+
+            this.dbContext.Articles.Remove(article);
+            await this.dbContext.SaveChangesAsync();
+
+            return this.RedirectToAction("My");
+        }
     }
 }
