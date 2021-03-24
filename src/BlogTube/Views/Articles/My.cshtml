@@ -1,13 +1,35 @@
 ﻿@using System.Collections.Generic
-@using BlogTube.Data
-@model List<Article>
+@model List<ArticleViewModel>
 
-<h1 class="display-4">My articles</h1>
+<h1 class="h2">My articles</h1>
 
-@foreach (Article article in Model)
+@foreach (ArticleViewModel article in Model)
 {
-    <div class="shadow-none">
-        <p class="lead">@article.Title</p>
-        <span class="alert-success">published on @article.PublishedOn</span>
+    <div class="alert alert-secondary col-12 my-4">
+        <a class="h4" asp-controller="Articles" asp-action="Id" asp-route-id="@article.Id">@article.Title</a>
+        <div>
+            <div class="my-3">
+                <span class="text-uppercase font-weight-bold">
+                    @article.CategoryName
+                </span>
+                <span class="font-italic col-6">
+                    on @article.PublishedOn
+                </span>
+            </div>
+            <div>
+                <span>
+                    <i class="fa fa-eye"></i>
+                    @article.Views
+                </span>
+                <span class="col-4">
+                    <i class="fa fa-thumbs-up"></i>
+                    @article.Upvotes
+                </span>
+                <span>
+                    <i class="fa fa fa-thumbs-down"></i>
+                    @article.Downvotes
+                </span>
+            </div>
+        </div>
     </div>
 }

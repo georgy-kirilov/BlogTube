@@ -4,7 +4,7 @@
     using BlogTube.Models;
     using BlogTube.Services;
     using BlogTube.Models.Input;
-    
+
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
@@ -21,8 +21,8 @@
         private readonly IArticlesService articlesService;
 
         public ArticlesController(
-            ApplicationDbContext dbContext, 
-            UserManager<ApplicationUser> userManager, 
+            ApplicationDbContext dbContext,
+            UserManager<ApplicationUser> userManager,
             IArticlesService articlesService)
         {
             this.dbContext = dbContext;
@@ -55,6 +55,7 @@
                 Title = input.Title,
                 Body = input.Body,
                 PublishedOn = DateTime.UtcNow,
+                Views = 1,
             };
 
             category.Articles.Add(article);
@@ -68,51 +69,27 @@
         public async Task<IActionResult> My()
         {
             ApplicationUser user = await this.userManager.GetUserAsync(this.User);
-            List<Article> articles = this.dbContext.Articles.Where(x => x.AuthorId == user.Id).ToList();
-            return this.View(articles);
+
+            var articles = this.dbContext.Articles.Where(x => x.AuthorId == user.Id).ToList();
+            var articlesViewModels = new List<ArticleViewModel>(articles.Count);
+
+            foreach (var article in articles)
+            {
+                articlesViewModels.Add(await this.articlesService.GetArticleAsync(user, article.Id));
+            }
+
+            return this.View(articlesViewModels);
         }
 
         public async Task<IActionResult> Id(string id)
         {
             ApplicationUser user = await this.userManager.GetUserAsync(this.User);
-            Article article = this.dbContext.Articles.FirstOrDefault(x => x.Id == id);
+            ArticleViewModel viewModel = await this.articlesService.GetArticleAsync(user, id);
 
-            if (article == null)
+            if (viewModel == null)
             {
                 return this.NotFound();
             }
-
-            VoteType voteType = VoteType.None;
-
-            if (user == null || article.AuthorId != user.Id)
-            {
-                article.Views++;
-                await this.dbContext.SaveChangesAsync();
-            }
-
-            if (user != null)
-            {
-                Vote vote = this.dbContext.Votes.FirstOrDefault(v => v.ArticleId == id && v.AuthorId == user.Id);
-
-                if (vote != null)
-                {
-                    voteType = vote.Type;
-                }
-            }
-
-            var viewModel = new ArticleViewModel
-            {
-                Id = article.Id,
-                Title = article.Title,
-                Body = article.Body,
-                AuthorName = this.dbContext.Users.FirstOrDefault(u => u.Id == article.AuthorId).UserName,
-                PublishedOn = article.PublishedOn.ToString("dd/MMMM/yyyy"),
-                Views = article.Views,
-                Upvotes = this.articlesService.GetUpvotesCount(article.Id),
-                Downvotes = this.articlesService.GetDownvotesCount(article.Id),
-                UserVoteType = voteType,
-                CategoryName = this.dbContext.Categories.FirstOrDefault(c => c.Id == article.CategoryId).Name,
-            };
 
             return this.View(viewModel);
         }
