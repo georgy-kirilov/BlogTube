@@ -1,0 +1,32 @@
+﻿@model List<ArticleViewModel>
+
+@foreach (ArticleViewModel article in Model)
+{
+    <div class="alert alert-secondary col-12 my-4">
+        <a class="h4" asp-controller="Articles" asp-action="Id" asp-route-id="@article.Id">@article.Title</a>
+        <div>
+            <div class="my-3">
+                <span class="font-italic font-weight-bold">
+                    by @@@article.AuthorName
+                </span>
+                <span class="font-italic">
+                    on @article.PublishedOn
+                </span>
+            </div>
+            <div>
+                <span>
+                    <i class="fa fa-eye"></i>
+                    @article.Views
+                </span>
+                <span class="col-4">
+                    <i class="fa fa-thumbs-up"></i>
+                    @article.Upvotes
+                </span>
+                <span>
+                    <i class="fa fa fa-thumbs-down"></i>
+                    @article.Downvotes
+                </span>
+            </div>
+        </div>
+    </div>
+}

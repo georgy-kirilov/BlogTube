@@ -1,8 +1,21 @@
-﻿@{
+﻿@using System.Collections.Generic
+@using BlogTube.Models.View
+@model IEnumerable<CategoryViewModel>
+
+@{
     ViewData["Title"] = "Home Page";
+    string GetCount(int articlesCount)
+    {
+        return articlesCount == 1 ? "article" : "articles";
+    }
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4 my-3">BlogTube - The blogger's paradise</h1>
+    @foreach (CategoryViewModel category in Model)
+    {
+        <div class="alert alert-dark">
+            <a class="h3" asp-controller="Categories" asp-action="Id" asp-route-id="@category.Id">@category.Name (@category.ArticlesCount @GetCount(category.ArticlesCount))</a>
+        </div>
+    }
 </div>

@@ -1,23 +1,39 @@
 ﻿namespace BlogTube.Controllers
 {
+    using BlogTube.Data;
     using BlogTube.Models;
+    using BlogTube.Models.View;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
+    using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Linq;
 
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ApplicationDbContext dbContext;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext dbContext)
         {
             _logger = logger;
+            this.dbContext = dbContext;
         }
 
         public IActionResult Index()
         {
-            return View();
+            List<CategoryViewModel> viewModels = this.dbContext
+                    .Categories
+                    .Select(x => new CategoryViewModel
+                    {
+                        Id = x.Id,
+                        Name = x.Name,
+                        ArticlesCount = x.Articles.Count,
+                    })
+                    .ToList();
+
+            return View(viewModels);
         }
 
         public IActionResult Privacy()
